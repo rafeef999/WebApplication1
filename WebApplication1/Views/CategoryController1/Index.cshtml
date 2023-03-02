@@ -1,0 +1,123 @@
+﻿@using WebApplication1.Controllers;
+@model WebApplication1.Models.catagorymodal
+
+
+<partial name="_Notification"/>
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Category List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="CategoryController1" asp-action="Index" class="btn btn-primary" id="createbtn" data-toggle="modal" data-target="#createModal">
+                Create New Category &nbsp; <i class="bi bi-plus-circle"></i> 
+            </a>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form  asp-action="Submitc" id="createForm" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create Category</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+        <div class="mb-2">
+                        <label asp-for="catagory.Name"></label>
+                        <input asp-for="catagory.Name" id="nameinput" class="form-control" />
+                        <span asp-validation-for="catagory.Name" class="text-danger"></span>
+
+        </div>
+        <div class="mb-2">
+                        <label asp-for="catagory.DisplayOrder"></label>
+                        <input asp-for="catagory.DisplayOrder" id="orderinput" class="form-control" />
+                        <span asp-validation-for="catagory.DisplayOrder" class="text-bg-warning"></span>
+
+        </div>
+      </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="createbtn" type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+                </form>
+                </div>
+               
+            </div>
+        </div>
+        
+    </div>
+
+
+    <br /><br />
+<table class="table table-bordered table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                Category Name
+			</th>
+            <th>
+                Display Order
+			</th>
+            <th class="m-sm-4">
+                Edit & Delete
+            </th>
+         
+		</tr>
+	</thead>
+    <tbody>
+        @foreach(var oj in @Model.catagories)
+        {
+            <tr>
+                <td width="50%">
+                    
+                       @oj.Name
+				</td>
+                <td width="30%">
+                        @oj.DisplayOrder
+
+				</td>
+                <td>
+                    <div  class="w-50 btn-group align-items-center" role="group">
+                            <a class="btn btn-primary mx-2" onclick="EditForm(@oj.ID)" id="EditForm"> <i class="bi bi-pencil-square"></i> Edit</a>
+                                <a asp-controller="CategoryController1" asp-action="Delete" asp-route-id="@oj.ID"
+                           class="btn btn-primary mx-2"> <i class="bi bi-trash3"></i> Delete</a>
+                        </div>
+                </td>
+            </tr>
+        }
+ </tbody>
+
+</table>
+
+
+@section Scripts{
+    @{
+        <await Html.RenderPartialAsyn("_ValidationScriptsPartial") ;/>
+    }
+    <script>
+        $(document).ready(function () {
+            $("#createbtn").click(function(){
+                var empform = $("#createForm").serialize();
+                $.ajax({
+                      type: "POST",
+                      url: "/CategoryController1/Submitc",
+                      data:empform,
+                      success:function () {
+                                       window.location.href="/CategoryController1/Index";
+                                          },
+                
+                });
+
+            })
+        })
+            
+            
+        
+    </script>
+}
