@@ -2,6 +2,7 @@
 using WebApplication1.data;
 using WebApplication1.Models;
 
+
 namespace WebApplication1.Controllers
 {
     public class CategoryController1 : Controller
@@ -106,6 +107,14 @@ namespace WebApplication1.Controllers
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
 
+        }  
+        public ActionResult task() {
+            List<string> lstStudent = new List<string>();
+            lstStudent.Add("jjDebasis");
+            lstStudent.Add("Samrat");
+            lstStudent.Add("Rahul");
+            TempData["StudentData"] = lstStudent;
+            return View();
         }
 
 
